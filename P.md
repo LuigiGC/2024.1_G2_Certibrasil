@@ -5,3 +5,4 @@ Para 04/03
 -Buscar ferramentas similiares
 -Dashboard (dash/Plotly)
 -Prototipo Figma
+-
