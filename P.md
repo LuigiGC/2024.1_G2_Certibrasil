@@ -1,21 +1,12 @@
-Para 04/03
+Para 25/03
 
--O que de fato não é atendido pelo sistema ideal?
--
+-Finalizar prototipo e casos de uso-
 
--Avaliar o Google Place
--
+-Requisitos funcionais e não funcionais-
 
--Buscar ferramentas similiares
--
+-Classes-
 
--Dashboard (dash/Plotly)
--
+-Informações necessarias para o cadastro de endereço dos clientes-
 
--Prototipo Figma
--
-
--4.2 Descrição do problema em diante
--
 
 
