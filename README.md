@@ -1,16 +1,4 @@
-# Projeto_Back-End
-Disciplina de Back-end
-
-# RepositorioTemplate
-Esse repositório é para ser utilizado pelos grupos como um template inicial, da home page do Projeto.
-Demais diretrizes sobre a organização da wiki constam no Moodle Aprender 3.
-**!! Atenção: Renomeie o seu repositório para (Ano.Semestre)_(Grupo)_(NomeDoProjeto). !!**
-
-**!! *Não coloque os nomes dos alunos no título do repositório*. Exemplo de título correto: 2020.1_G1_ProjetoPandora!!**
-
- (Apague essa seção)
-
-# NomedoProjeto
+# CertiBrasil
 
 **Número do Grupo**: XX<br>
 **Código da Disciplina**: FGA0208-T01<br>
@@ -18,18 +6,18 @@ Demais diretrizes sobre a organização da wiki constam no Moodle Aprender 3.
 ## Alunos
 |Matrícula | Aluno |
 | -- | -- |
-| xx/xxxxxx  |  xxxx xxxx xxxxx |
+| 202304419108  |  Luigi Fernando Giannini Cardoso |
 | xx/xxxxxx  |  xxxx xxxx xxxxx |
 
 ## Sobre
-Descreva o seu projeto em linhas gerais.
+Desenvolver um sistema de geolocalização para clientes cadastrados contendo informações sobre tal cliente sendo marcado no mapa por coordenadas
 
 ## Screenshots
 Adicione 3 ou mais screenshots do projeto em termos de interface e funcionamento.
 
 ## Instalação
-**Linguagens**: xxxxxx<br>
-**Tecnologias**: xxxxxx<br>
+**Linguagens**: Python<br>
+**Tecnologias**: Django<br>
 Descreva os pré-requisitos para rodar o seu projeto e os comandos necessários.
 Insira um manual ou um script para auxiliar ainda mais.
 
