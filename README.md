@@ -7,6 +7,7 @@
 |Matrícula | Aluno |
 | -- | -- |
 | 202304419108  |  Luigi Fernando Giannini Cardoso |
+| 202309013088  |  Guilherme de Alcantara Dantas |
 | xx/xxxxxx  |  xxxx xxxx xxxxx |
 
 ## Sobre
