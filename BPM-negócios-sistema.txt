@@ -33,4 +33,4 @@ BPM(Business Process Management)-sistema
 
 5) Certificado ISO: O cliente pode checar se pode tirar uma ISO,
    se esta empresa estiver nos padrões para tirar tal ISO ou alguma outra,
-   o cliente será informado pelo próprio sistema.
+   o cliente será informado pelo próprio sistema..
