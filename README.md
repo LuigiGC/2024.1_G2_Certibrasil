@@ -1,13 +1,14 @@
 # CertiBrasil
 
-**Número do Grupo**: XX<br>
-**Código da Disciplina**: FGA0208-T01<br>
+**Número do Grupo**: 02<br>
+**Código da Disciplina**: IBM8936<br>
 
 ## Alunos
 |Matrícula | Aluno |
 | -- | -- |
 | 202304419108  |  Luigi Fernando Giannini Cardoso |
 | 202309013088  |  Guilherme de Alcantara Dantas |
+| 202303229844  |  Luahn Kayê Alves de Sousa Sklenicka de Oliveira |
 | xx/xxxxxx  |  xxxx xxxx xxxxx |
 
 ## Sobre
@@ -17,8 +18,8 @@ Desenvolver um sistema de geolocalização para clientes cadastrados contendo in
 Adicione 3 ou mais screenshots do projeto em termos de interface e funcionamento.
 
 ## Instalação
-**Linguagens**: Python<br>
-**Tecnologias**: Django<br>
+**Linguagens**: Python(Django)<br>
+**Tecnologias**: <br>
 Descreva os pré-requisitos para rodar o seu projeto e os comandos necessários.
 Insira um manual ou um script para auxiliar ainda mais.
 
