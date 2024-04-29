@@ -9,8 +9,9 @@
 | 202304419108  |  Luigi Fernando Giannini Cardoso |
 | 202309013088  |  Guilherme de Alcantara Dantas |
 | 202303229844  |  Luahn Kayê Alves de Sousa Sklenicka de Oliveira |
+| 202303492685  |  Vitor Sossai Rodrigues Esteves |
+| 202303429321  |  Ricardo Oliveira Renno de Magalhães Castro |
 | xx/xxxxxx  |  xxxx xxxx xxxxx |
-
 ## Sobre
 Desenvolver um sistema de geolocalização para clientes cadastrados contendo informações sobre tal cliente sendo marcado no mapa por coordenadas
 
