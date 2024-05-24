@@ -3,7 +3,6 @@ id: diagrama_de_classes
 title: Diagrama de Classes
 ---
 
-# Não precisa entregar para a AP1
 ## Introdução
 
 <p align = "justify">
@@ -56,4 +55,4 @@ Através do diagrama de classes, foi possível representar a estrutura do sistem
 | Data | Versão | Descrição | Autor(es) |
 | -- | -- | -- | -- |
 | 24/05/24 | 1.0 | Criação do documento |Luigi Fernando|
- 
+
