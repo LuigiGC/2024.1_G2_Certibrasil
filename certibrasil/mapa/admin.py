@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.contrib import admin  
 
-from mapa.models import cliente, endereco, certificacao 
+from .models import Cliente, Endereco, Certificacao 
 
-admin.site.register(cliente)  
-admin.site.register(endereco) 
-admin.site.register(certificacao)
+admin.site.register(Cliente)  
+admin.site.register(Endereco) 
+admin.site.register(Certificacao)
