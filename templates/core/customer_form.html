@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Customer Form</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            background-color: rgba(255,255,255,0.13);
+            border-radius: 10px;
+            padding: 50px;
+            width: 400px;
+            box-shadow: 0 0 40px rgba(8,7,16,0.6);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        button {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #ffffff;
+            color: #080710;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ form.instance.pk|yesno:"Edit Customer,Add Customer" }}</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Save</button>
+        </form>
+        <a href="{% url 'customer-list' %}">Back to Customer List</a>
+    </div>
+</body>
+</html>
