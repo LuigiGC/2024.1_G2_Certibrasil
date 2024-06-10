@@ -19,7 +19,7 @@ Desenvolver um sistema de geolocalização para clientes cadastrados contendo in
 Adicione 3 ou mais screenshots do projeto em termos de interface e funcionamento.
 
 ## Instalação
-**Linguagens**: Python(Django)<br>
+**Linguagens**: Python(Django), HTML5, CSS3, Javascript, SQLite, Git.<br><br>
 **Tecnologias**: <br>
 Descreva os pré-requisitos para rodar o seu projeto e os comandos necessários.
 Insira um manual ou um script para auxiliar ainda mais.
