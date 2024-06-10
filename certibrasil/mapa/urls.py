@@ -1,8 +1,10 @@
+# urls.py
 from django.urls import path
-from . import views
+from .views import empresa_create_view, endereco_create_view, iso_create_view, home
 
 urlpatterns = [
-    path('login/', views.login, name='login'),
-    path('home/', views.home, name="home"),
-    path('cadastro/', views.cadastro, name="cadastro"),
+    path('', home, name='home'),
+    path('empresa/nova', empresa_create_view, name='empresa_create'),
+    path('empresa/<int:empresa_id>/endereco/nova/', endereco_create_view, name='endereco_create'),
+    path('empresa/<int:empresa_id>/iso/nova/', iso_create_view, name='iso_create'),
 ]

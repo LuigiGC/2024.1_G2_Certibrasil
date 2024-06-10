@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.contrib import admin  
 
-from .models import Cliente, Endereco, Certificacao 
+from .models import Empresa, Endereco, ISO
 
-admin.site.register(Cliente)  
+admin.site.register(Empresa)  
 admin.site.register(Endereco) 
-admin.site.register(Certificacao)
+admin.site.register(ISO)

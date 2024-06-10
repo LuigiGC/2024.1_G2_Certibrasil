@@ -1,39 +1,32 @@
-from django.utils import timezone  
-from django.db import models  
-from django.urls import reverse
-from django.contrib.auth.models import User
+# models.py
+from django.db import models
 
-class Cliente(models.Model):
-    nome = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
-    telefone = models.CharField(max_length=20, null=True, blank=True)  # Alterado para CharField
-    cnpj = models.CharField(max_length=14, unique=True)
+class Empresa(models.Model):
+    nome_empresa = models.CharField(max_length=255)
+    nome = models.CharField(max_length=255)
+    email = models.EmailField()
+    telefone = models.CharField(max_length=20)
+    cnpj = models.CharField(max_length=20)
 
-    def _str_(self):
-        return self.nome
+    def __str__(self):
+        return self.nome_empresa
 
 class Endereco(models.Model):
-    cliente = models.ForeignKey(Cliente, related_name='enderecos', on_delete=models.CASCADE)
-    rua = models.CharField(max_length=255)
-    bairro = models.CharField(max_length=100, null=True, blank=True)
-    cidade = models.CharField(max_length=100)
-    estado = models.CharField(max_length=100)
-    zip_code = models.CharField(max_length=20)
-    latitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    longitude = models.DecimalField(max_digits=9, decimal_places=6, null=True, blank=True)
-    numero = models.CharField(max_length=10, null=True, blank=True)  # Alterado para CharField
-    cep = models.CharField(max_length=10, null=True, blank=True)  # Alterado para CharField
-    pais = models.CharField(max_length=100)
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='enderecos')
+    cep = models.CharField(max_length=10)
+    logradouro = models.CharField(max_length=255)
+    numero = models.CharField(max_length=10, blank=True, null=True)
+    complemento = models.CharField(max_length=255, blank=True, null=True)
+    bairro = models.CharField(max_length=255)
+    cidade = models.CharField(max_length=255)
+    uf = models.CharField(max_length=2)
+    latitude = models.CharField(max_length=20)
+    longitude = models.CharField(max_length=20)
 
-    def _str_(self):
-        return f"{self.rua}, {self.cidade}"
-
-class Certificacao(models.Model):
-    cliente = models.ForeignKey(Cliente, related_name='certificacoes', on_delete=models.CASCADE)
-    nome_do_produto = models.CharField(max_length=200)
-    quantidade = models.PositiveIntegerField()
-    preco = models.DecimalField(max_digits=10, decimal_places=2)
-    data_do_pedido = models.DateTimeField(auto_now_add=True)
-
-    def _str_(self):
-        return f"Certificação {self.id} - {self.cliente.nome}"
+class ISO(models.Model):
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='certificacoes')
+    iso_type = models.CharField(max_length=50)
+    odc = models.CharField(max_length=50)
+    consultor = models.CharField(max_length=255)
+    data_efetivacao = models.DateField()
+    validade = models.DateField()
