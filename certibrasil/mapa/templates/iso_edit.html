@@ -1,10 +1,8 @@
-<!-- endereco_form.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <title>Cadastro de Endereço</title>
-    <style media="screen">
+    <title>Editar Certificação ISO</title>
+    <style>
         *,
         *:before,
         *:after{
@@ -94,14 +92,14 @@
             text-decoration: none;
         }
     </style>
+
 </head>
 <body>
+    <h2>Editar Certificação ISO</h2>
     <form method="post">
-        <h2>Cadastro de Endereço</h2>
         {% csrf_token %}
-        {{ endereco_form.as_p }}
-        <button type="submit">Salvar Endereço</button>
-        <a href="{% url 'empresaList' %}">Voltar</a>
+        {{ form.as_p }}
+        <button type="submit">Salvar Alterações</button>
     </form>
 </body>
 </html>

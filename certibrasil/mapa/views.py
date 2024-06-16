@@ -1,23 +1,39 @@
 # views.py
-from django.shortcuts import render, redirect
-from .forms import EmpresaForm, EnderecoForm, ISOForm
+from django.shortcuts import render, redirect,get_object_or_404
+from .forms import EmpresaForm, EnderecoForm, ISOForm, UserForm
 from .models import Empresa,ISO,Endereco
 import json
-import folium 
-
+import folium
 from geopy.geocoders import Nominatim
-
+from django.contrib.auth import authenticate, login,logout
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('all-addresses-map')
+        else:
+            messages.error(request, 'Usuário ou senha inválidos')
+    return render(request, 'login.html')
+@login_required
+def logout_view(request):
+    logout(request)
+    return redirect('login')
+@login_required
 def empresa_create_view(request):
     if request.method == 'POST':
         empresa_form = EmpresaForm(request.POST)
         if empresa_form.is_valid():
             empresa = empresa_form.save()
-            # Redirecionar para uma página de sucesso ou outra ação
-            return redirect('success_url')
+            return redirect('empresaList')
     else:
         empresa_form = EmpresaForm()
     return render(request, 'empresa_form.html', {'empresa_form': empresa_form})
-
+@login_required
 def endereco_create_view(request, empresa_id):
     empresa = Empresa.objects.get(id=empresa_id)
     if request.method == 'POST':
@@ -26,11 +42,11 @@ def endereco_create_view(request, empresa_id):
             endereco = endereco_form.save(commit=False)
             endereco.empresa = empresa
             endereco.save()
-            return redirect('success_url')
+            return redirect('empresa_detail', pk=empresa_id)
     else:
         endereco_form = EnderecoForm()
     return render(request, 'endereco_form.html', {'endereco_form': endereco_form, 'empresa': empresa})
-
+@login_required
 def iso_create_view(request, empresa_id):
     empresa = Empresa.objects.get(id=empresa_id)
     if request.method == 'POST':
@@ -39,12 +55,12 @@ def iso_create_view(request, empresa_id):
             iso = iso_form.save(commit=False)
             iso.empresa = empresa
             iso.save()
-            return redirect('success_url')
+            return redirect('empresa_detail', pk=empresa_id)
     else:
         iso_form = ISOForm()
     return render(request, 'iso_form.html', {'iso_form': iso_form, 'empresa': empresa})
 
-
+@login_required
 def all_addresses_map(request):
     state = request.GET.get('uf')
     city = request.GET.get('cidade')
@@ -85,7 +101,7 @@ def all_addresses_map(request):
                     center_lat = location.latitude
                     center_lon = location.longitude
 
-    m = folium.Map(location=[center_lat, center_lon], zoom_start=12)
+    m = folium.Map(location=[center_lat, center_lon], zoom_start=4)
 
     for endereco in addresses:
         lat, lon = endereco.latitude, endereco.longitude
@@ -109,9 +125,12 @@ def all_addresses_map(request):
                     lat, lon = location.latitude, location.longitude
 
         if lat is not None and lon is not None:
+            empresa = endereco.empresa
+            iso_types = ', '.join([iso.iso_type for iso in empresa.certificacoes.all()])
+            popup_text = f"{empresa.nome_empresa}"#<br>ISOs: {iso_types} #não operacional
             folium.Marker(
                 [lat, lon],
-                popup=f"{endereco.uf}, {endereco.cidade}",
+                popup=popup_text,
                 tooltip=endereco.bairro
             ).add_to(m)
 
@@ -126,3 +145,67 @@ def all_addresses_map(request):
         'cidades': json.dumps(list(cities)),
         'bairros': json.dumps(list(neighborhoods)),
     })
+@login_required
+def empresa_detail(request, pk):
+    empresa = get_object_or_404(Empresa, pk=pk)
+    return render(request, './customer_detail_with_details.html', {'empresa': empresa})
+@login_required
+def empresa_list(request):
+    empresas = Empresa.objects.all()
+    return render(request, './customer_list.html', {'empresas': empresas})
+@login_required
+def empresa_edit(request, pk):
+    empresa = get_object_or_404(Empresa, pk=pk)
+    if request.method == 'POST':
+        form = EmpresaForm(request.POST, instance=empresa)
+        if form.is_valid():
+            form.save()
+            return redirect('empresaList')
+    else:
+        form = EmpresaForm(instance=empresa)
+    return render(request, 'empresa_edit.html', {'form': form})
+@login_required
+def empresa_delete(request, pk):
+    empresa = get_object_or_404(Empresa,pk=pk)
+    if request.method == 'POST':
+        empresa.delete()
+        return redirect('empresaList')
+    return render(request, 'empresa_confirm_delete.html', {'empresa': empresa})
+@login_required
+def endereco_edit(request, empresa_id, pk):
+    endereco = get_object_or_404(Endereco, pk=pk, empresa_id=empresa_id)
+    if request.method == 'POST':
+        form = EnderecoForm(request.POST, instance=endereco)
+        if form.is_valid():
+            form.save()
+            return redirect('empresa_detail', pk=empresa_id)
+    else:
+        form = EnderecoForm(instance=endereco)
+    return render(request, 'endereco_edit.html', {'form': form})
+@login_required
+def endereco_delete(request,empresa_id, pk):
+    endereco = get_object_or_404(Endereco, pk=pk, empresa_id=empresa_id)
+    empresa_pk = endereco.empresa.pk
+    if request.method == 'POST':
+        endereco.delete()
+        return redirect('empresa_detail',pk=empresa_id)
+    return render(request, 'endereco_confirm_delete.html', {'endereco': endereco})
+@login_required
+def iso_edit(request, empresa_id, pk):
+    iso = get_object_or_404(ISO, pk=pk, empresa_id=empresa_id)
+    if request.method == 'POST':
+        form = ISOForm(request.POST, instance=iso)
+        if form.is_valid():
+            form.save()
+            return redirect('empresa_detail', pk=empresa_id)
+    else:
+        form = ISOForm(instance=iso)
+    return render(request, 'iso_edit.html', {'form': form})
+@login_required
+def iso_delete(request,empresa_id, pk):
+    iso = get_object_or_404(ISO,pk=pk, empresa_id=empresa_id)
+    empresa_pk = iso.empresa.pk
+    if request.method == 'POST':
+        iso.delete()
+        return redirect('empresa_detail',pk=empresa_id)
+    return render(request, 'iso_confirm_delete.html', {'iso': iso})

@@ -77,6 +77,22 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        a{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            width: 100%;
+            background-color: #ffffff;
+            color: #080710;
+            padding: 15px 0;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+        }
     </style>
 </head>
 <body>
@@ -84,7 +100,9 @@
         <h2>Cadastro de Empresa</h2>
         {% csrf_token %}
         {{ empresa_form.as_p }}
-        <button type="submit">Salvar</button>
+        <button type="submit">Salvar
+        </button>
+        <a href="{% url 'empresaList' %}">Voltar</a>
     </form>
 </body>
 </html>

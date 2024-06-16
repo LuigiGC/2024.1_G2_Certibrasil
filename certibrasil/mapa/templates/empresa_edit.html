@@ -1,10 +1,10 @@
-<!-- endereco_form.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <title>Cadastro de Endereço</title>
-    <style media="screen">
+    <title>Editar Empresa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <style>
         *,
         *:before,
         *:after{
@@ -94,14 +94,14 @@
             text-decoration: none;
         }
     </style>
+    </style>
 </head>
 <body>
     <form method="post">
-        <h2>Cadastro de Endereço</h2>
+        <h2>Editar Empresa</h2>
         {% csrf_token %}
-        {{ endereco_form.as_p }}
-        <button type="submit">Salvar Endereço</button>
-        <a href="{% url 'empresaList' %}">Voltar</a>
+        {{ form.as_p }}
+        <button type="submit">Salvar Alterações</button>
     </form>
 </body>
 </html>

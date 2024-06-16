@@ -16,3 +16,14 @@ class ISOForm(forms.ModelForm):
     class Meta:
         model = ISO
         fields = ['iso_type', 'odc', 'consultor', 'data_efetivacao', 'validade']
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model=Empresa
+        fields =('nome_empresa', 'nome', 'email', 'telefone', 'cnpj')
+        # fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'

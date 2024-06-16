@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <title>Confirmar Exclusão do Endereço</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: rgba(255,255,255,0.13);
+            border-radius: 10px;
+            padding: 50px;
+            text-align: center;
+            width: 400px;
+            box-shadow: 0 0 40px rgba(8,7,16,0.6);
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        button, a {
+            display: block;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
+            width: 100%;
+            text-align: center;
+        }
+        button {
+            background-color: #ffffff;
+            color: #080710;
+            border: none;
+            cursor: pointer;
+        }
+        a {
+            background-color: rgba(255,255,255,0.1);
+            color: #ffffff;
+        }
+        a:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <h2>Tem certeza que deseja excluir este endereço?</h2>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit">Sim, Excluir</button>
+            <a href="{% url 'empresa_detail' endereco.empresa.pk %}">Cancelar</a>
+        </form>
+    </div>
+</body>
+</html>
