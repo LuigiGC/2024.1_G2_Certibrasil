@@ -1,0 +1,15 @@
+id,bairro,cidade,latitude,longitude,numero,cep,logradouro,complemento,uf,empresa_id
+21,Alto da Boa Vista,Rio de Janeiro,-22.9519,-43.2105,,20531-590,Parque Nacional da Tijuca,,RJ,33
+22,Copacabana,Rio de Janeiro,-22.9711,-43.1822,,22010-000,Avenida Atlântica,,RJ,33
+23,Maracanã,Rio de Janeiro,-22.9121,-43.2302,,20271150,Rua Professor Eurico Rabelo,,RJ,33
+24,Centro,Rio de Janeiro,-22.8959,-43.1809,,20081-240,Praça Mauá,,RJ,34
+25,Urca,Rio de Janeiro,-22.9485,-43.1565,,57400-000,Avenida Pasteur,,RJ,34
+26,Ipanema,Rio de Janeiro,-22.9836,-43.2056,,22420-002,Avenida Vieira Souto,,RJ,35
+27,Centro,Cabo Frio,-22.8894,-42.0243,,48287000,Praia do Forte,,RJ,35
+28,Centro,Paraty,-23.2221,-44.7179,,23970-000,Centro Histórico,,RJ,36
+29,Centro,Petrópolis,-22.5083,-43.1779,,25610-320,Rua da Imperatriz,,RJ,36
+30,Centro,São Paulo,-23.5617,-46.6554,,28949-794,Avenida Paulista,,SP,37
+31,Centro,Salvador,-12.9714,-38.5070,,40026280,Centro Histórico de Salvador,,BA,37
+32,Centro,Ouro Preto,-20.3853,-43.5037,,35417-000,Praça Tiradentes,,MG,37
+33,Esplanada dos Ministérios,Brasília,-15.7998,-47.8645,,70059-900,Esplanada dos Ministérios,,DF,37
+34,Centro,Fortaleza,-3.7318616,-38.5266704,,60822-975,Rua Pedro I,,CE,37
