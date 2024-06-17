@@ -2,13 +2,12 @@
 <html>
 <head>
     <title>Mapa</title>
-
     <style>
         :root {
-        --arrow-bg: #262626;
-        --arrow-icon: url(https://upload.wikimedia.org/wikipedia/commons/9/9d/Caret_down_font_awesome_whitevariation.svg);
-        --option-bg: white;
-        --select-bg: #262626;
+            --arrow-bg: #262626;
+            --arrow-icon: url(https://upload.wikimedia.org/wikipedia/commons/9/9d/Caret_down_font_awesome_whitevariation.svg);
+            --option-bg: white;
+            --select-bg: #262626;
         }
         body {
             font-family: Arial, sans-serif;
@@ -64,46 +63,41 @@
             padding: 10px;
             border-radius: 5px;
         }
-            select {
-                /* Reset */
-                appearance: none;
-                border: 0;
-                outline: 0;
-                font: inherit;
-                /* Personalize */
-                width: 16rem;
-                padding: 1rem 4rem 1rem 1rem;
-                background: var(--arrow-icon) no-repeat right 0.8em center / 1.4em,
-                    linear-gradient(to left, var(--arrow-bg) 3em, var(--select-bg) 3em);
-                color: rgb(242, 255, 0);
-                border-radius: 0.25em;
-                box-shadow: 0 0 0.6em 0 rgb(242, 255, 0);
-                cursor: pointer;
-                /* Remove IE arrow */
-                &::-ms-expand {
-                    display: none;
-                }
-                /* Remove focus outline */
-                &:focus {
-                    outline: none;
-                }
-                /* <option> colors */
-            }
-            option {
-                    color: rgb(242, 255, 0);
-                    background-color: #262626;
-            }
-            button{
-                color: rgb(242, 255, 0);
-                background-color: #262626;
-                appearance: none;
-                border: 0;
-                outline: 0;
-                font: inherit;
-                cursor: pointer;
-                border-radius: 0.25em;
-                box-shadow: 0 0 0.6em 0 rgb(242, 255, 0);
-            }
+        select {
+            appearance: none;
+            border: 0;
+            outline: 0;
+            font: inherit;
+            width: 16rem;
+            padding: 1rem 4rem 1rem 1rem;
+            background: var(--arrow-icon) no-repeat right 0.8em center / 1.4em,
+                linear-gradient(to left, var(--arrow-bg) 3em, var(--select-bg) 3em);
+            color: rgb(242, 255, 0);
+            border-radius: 0.25em;
+            box-shadow: 0 0 0.6em 0 rgb(242, 255, 0);
+            cursor: pointer;
+        }
+        select::-ms-expand {
+            display: none;
+        }
+        select:focus {
+            outline: none;
+        }
+        option {
+            color: rgb(242, 255, 0);
+            background-color: #262626;
+        }
+        button {
+            color: rgb(242, 255, 0);
+            background-color: #262626;
+            appearance: none;
+            border: 0;
+            outline: 0;
+            font: inherit;
+            cursor: pointer;
+            border-radius: 0.25em;
+            box-shadow: 0 0 0.6em 0 rgb(242, 255, 0);
+        }
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -111,21 +105,21 @@
             const citySelect = document.getElementById('cidade');
             const neighborhoodSelect = document.getElementById('bairro');
 
-            const allCities = JSON.parse('{{ cidades|safe }}');
-            const allNeighborhoods = JSON.parse('{{ bairros|safe }}');
+            const allCities = JSON.parse('{{ cidades|escapejs }}');
+            const allNeighborhoods = JSON.parse('{{ bairros|escapejs }}');
 
             stateSelect.addEventListener('change', function() {
                 const selectedState = this.value;
-                citySelect.innerHTML = '<option value="">Selecione cidade </option>';
-                neighborhoodSelect.innerHTML = '<option value="">Selecione bairrod</option>';
+                citySelect.innerHTML = '<option value="">Selecione a Cidade</option>';
+                neighborhoodSelect.innerHTML = '<option value="">Selecione o Bairro</option>';
 
                 if (selectedState) {
-                    const filteredCities = allCities.filter(cidade => cidade[1] === selectedState);
+                    const filteredCities = allCities.filter(cidade => cidade === selectedState);
                     filteredCities.forEach(cidade => {
                         const option = document.createElement('option');
-                        option.value = cidade[0];
-                        option.text = cidade[0];
-                        citySelect.add(option);
+                        option.value = cidade;
+                        option.textContent = cidade;
+                        citySelect.appendChild(option);
                     });
                 }
             });
@@ -133,15 +127,15 @@
             citySelect.addEventListener('change', function() {
                 const selectedCity = this.value;
                 const selectedState = stateSelect.value;
-                neighborhoodSelect.innerHTML = '<option value="">Select Neighborhood</option>';
+                neighborhoodSelect.innerHTML = '<option value="">Selecione o Bairro</option>';
 
                 if (selectedState && selectedCity) {
                     const filteredNeighborhoods = allNeighborhoods.filter(neighborhood => neighborhood[1] === selectedState && neighborhood[2] === selectedCity);
                     filteredNeighborhoods.forEach(neighborhood => {
                         const option = document.createElement('option');
                         option.value = neighborhood[0];
-                        option.text = neighborhood[0];
-                        neighborhoodSelect.add(option);
+                        option.textContent = neighborhood[0];
+                        neighborhoodSelect.appendChild(option);
                     });
                 }
             });
@@ -157,43 +151,37 @@
     <h1 style="text-align: center;">Mapa Clientes</h1>
     <div class="container">
         <div class="form-container">
-
-    <form method="get" action="{% url 'all-addresses-map' %}">
-
-        <select id="uf" name="uf">
-            <option value="">Selecione a UF</option>
-            {% for s in ufs %}
-                <option value="{{ s }}" {% if s == uf %}selected{% endif %}>{{ s }}</option>
-            {% endfor %}
-        </select>
-
-        <select id="cidade" name="cidade">
-            <option value="">Selecione a Cidade</option>
-            {% if uf %}
-                {% for c in cidades %}
-                    <option value="{{ c }}" {% if c == cidade %}selected{% endif %}>{{ c }}</option>
-                {% endfor %}
-            {% endif %}
-        </select>
-
-        <select id="neighborhood" name="neighborhood">
-            <option value="">Selecione o Bairro</option>
-            {% if uf and cidade %}
-                {% for n in bairros %}
-                    <option value="{{ n }}" {% if n == bairro %}selected{% endif %}>{{ n }}</option>
-                {% endfor %}
-            {% endif %}
-        </select>
-
-        <button type="submit">Buscar</button>
-    </form>
-    </div>
-
-    <div class="map-container">
-        <div id="map">
-            {{ map_html|safe }}
+            <form method="get" action="{% url 'all-addresses-map' %}">
+                <select id="uf" name="uf">
+                    <option value="">Selecione a UF</option>
+                    {% for s in ufs %}
+                        <option value="{{ s }}" {% if s == uf %}selected{% endif %}>{{ s }}</option>
+                    {% endfor %}
+                </select>
+                <select id="cidade" name="cidade">
+                    <option value="">Selecione a Cidade</option>
+                    {% if uf %}
+                        {% for c in cidades %}
+                            <option value="{{ c }}" {% if c == cidade %}selected{% endif %}>{{ c }}</option>
+                        {% endfor %}
+                    {% endif %}
+                </select>
+                <select id="bairro" name="bairro">
+                    <option value="">Selecione o Bairro</option>
+                    {% if uf and cidade %}
+                        {% for n in bairros %}
+                            <option value="{{ n }}" {% if n == bairro %}selected{% endif %}>{{ n }}</option>
+                        {% endfor %}
+                    {% endif %}
+                </select>
+                <button type="submit">Buscar</button>
+            </form>
+        </div>
+        <div class="map-container">
+            <div id="map">
+                {{ map_html|safe }}
+            </div>
         </div>
     </div>
-</div>
 </body>
 </html>

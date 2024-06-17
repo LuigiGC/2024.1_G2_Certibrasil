@@ -67,23 +67,19 @@ def all_addresses_map(request):
     neighborhood = request.GET.get('bairro')
 
     addresses = Endereco.objects.all()
-    print(addresses)
     states = Endereco.objects.values_list('uf', flat=True).distinct()
-    cities = Endereco.objects.values_list('cidade', 'uf').distinct()
-    neighborhoods = Endereco.objects.values_list('bairro', 'uf', 'cidade').distinct()
-
+    cities = Endereco.objects.filter(uf=state).values_list('cidade', flat=True).distinct() if state else []
+    neighborhoods = Endereco.objects.filter(uf=state, cidade=city).values_list('bairro', flat=True).distinct() if state and city else []
 
     if state:
         addresses = addresses.filter(uf=state)
-        cities = Endereco.objects.filter(uf=state).values_list('cidade', 'uf').distinct()
     if city:
         addresses = addresses.filter(cidade=city)
-        neighborhoods = Endereco.objects.filter(uf=state, cidade=city).values_list('bairro', 'uf', 'cidade').distinct()
     if neighborhood:
         addresses = addresses.filter(bairro=neighborhood)
 
-    # Calculate the center of the map based on filtered addresses
-    center_lat, center_lon = -14.2350, -51.9253  # Default center: Brazil
+    # Calcular o centro do mapa baseado nos endereços filtrados
+    center_lat, center_lon = -14.2350, -51.9253  # Centro padrão: Brasil
     if addresses.exists():
         latitudes = [addr.latitude for addr in addresses if addr.latitude]
         longitudes = [addr.longitude for addr in addresses if addr.longitude]
@@ -92,7 +88,6 @@ def all_addresses_map(request):
             center_lat = sum(map(float, latitudes)) / len(latitudes)
             center_lon = sum(map(float, longitudes)) / len(longitudes)
         else:
-            # If no latitude/longitude, use geolocation based on other Endereco fields
             geolocator = Nominatim(user_agent="core")
             location_str = state or city or neighborhood or None
             if location_str:
@@ -105,7 +100,6 @@ def all_addresses_map(request):
 
     for endereco in addresses:
         lat, lon = endereco.latitude, endereco.longitude
-
         if lat is None or lon is None:
             location_str = None
             if endereco.cep:
@@ -127,7 +121,7 @@ def all_addresses_map(request):
         if lat is not None and lon is not None:
             empresa = endereco.empresa
             iso_types = ', '.join([iso.iso_type for iso in empresa.certificacoes.all()])
-            popup_text = f"{empresa.nome_empresa}"#<br>ISOs: {iso_types} #não operacional feito:Luigi
+            popup_text = f"{empresa.nome_empresa}"
             folium.Marker(
                 [lat, lon],
                 popup=popup_text,
@@ -142,9 +136,10 @@ def all_addresses_map(request):
         'cidade': city,
         'bairro': neighborhood,
         'ufs': states,
-        'cidades': json.dumps(list(cities)),
-        'bairros': json.dumps(list(neighborhoods)),
+        'cidades': list(cities),
+        'bairros': list(neighborhoods),
     })
+
 @login_required
 def empresa_detail(request, pk):
     empresa = get_object_or_404(Empresa, pk=pk)
