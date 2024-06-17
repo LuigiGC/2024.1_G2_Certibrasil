@@ -8,6 +8,7 @@ from geopy.geocoders import Nominatim
 from django.contrib.auth import authenticate, login,logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+
 def login_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -19,10 +20,12 @@ def login_view(request):
         else:
             messages.error(request, 'Usuário ou senha inválidos')
     return render(request, 'login.html')
+
 @login_required
 def logout_view(request):
     logout(request)
     return redirect('login')
+
 @login_required
 def empresa_create_view(request):
     if request.method == 'POST':
@@ -33,6 +36,7 @@ def empresa_create_view(request):
     else:
         empresa_form = EmpresaForm()
     return render(request, 'empresa_form.html', {'empresa_form': empresa_form})
+
 @login_required
 def endereco_create_view(request, empresa_id):
     empresa = Empresa.objects.get(id=empresa_id)
@@ -46,6 +50,7 @@ def endereco_create_view(request, empresa_id):
     else:
         endereco_form = EnderecoForm()
     return render(request, 'endereco_form.html', {'endereco_form': endereco_form, 'empresa': empresa})
+
 @login_required
 def iso_create_view(request, empresa_id):
     empresa = Empresa.objects.get(id=empresa_id)
@@ -63,7 +68,7 @@ def iso_create_view(request, empresa_id):
 @login_required
 def all_addresses_map(request):
     state = request.GET.get('uf')
-    city = request.GET.get('cidade')
+    city = new_func(request)
     neighborhood = request.GET.get('bairro')
 
     addresses = Endereco.objects.all()
@@ -139,14 +144,27 @@ def all_addresses_map(request):
         'cidades': list(cities),
         'bairros': list(neighborhoods),
     })
+
+def new_func(request):
+    city = request.GET.get('cidade')
+    return city
+    
 @login_required
 def empresa_detail(request, pk):
     empresa = get_object_or_404(Empresa, pk=pk)
     return render(request, './customer_detail_with_details.html', {'empresa': empresa})
+
 @login_required
 def empresa_list(request):
-    empresas = Empresa.objects.all()
-    return render(request, './customer_list.html', {'empresas': empresas})
+    q = request.GET.get('q')
+    
+    if q:
+        empresas_list = Empresa.objects.filter(nome__icontains=q)
+    else:
+        empresas_list = Empresa.objects.all()
+    return render(request, './customer_list.html', {'empresas': empresas_list})
+    
+
 @login_required
 def empresa_edit(request, pk):
     empresa = get_object_or_404(Empresa, pk=pk)
@@ -158,6 +176,7 @@ def empresa_edit(request, pk):
     else:
         form = EmpresaForm(instance=empresa)
     return render(request, 'empresa_edit.html', {'form': form})
+
 @login_required
 def empresa_delete(request, pk):
     empresa = get_object_or_404(Empresa,pk=pk)
@@ -165,6 +184,7 @@ def empresa_delete(request, pk):
         empresa.delete()
         return redirect('empresaList')
     return render(request, 'empresa_confirm_delete.html', {'empresa': empresa})
+
 @login_required
 def endereco_edit(request, empresa_id, pk):
     endereco = get_object_or_404(Endereco, pk=pk, empresa_id=empresa_id)
@@ -176,6 +196,7 @@ def endereco_edit(request, empresa_id, pk):
     else:
         form = EnderecoForm(instance=endereco)
     return render(request, 'endereco_edit.html', {'form': form})
+
 @login_required
 def endereco_delete(request,empresa_id, pk):
     endereco = get_object_or_404(Endereco, pk=pk, empresa_id=empresa_id)
@@ -184,6 +205,7 @@ def endereco_delete(request,empresa_id, pk):
         endereco.delete()
         return redirect('empresa_detail',pk=empresa_id)
     return render(request, 'endereco_confirm_delete.html', {'endereco': endereco})
+
 @login_required
 def iso_edit(request, empresa_id, pk):
     iso = get_object_or_404(ISO, pk=pk, empresa_id=empresa_id)
@@ -195,6 +217,7 @@ def iso_edit(request, empresa_id, pk):
     else:
         form = ISOForm(instance=iso)
     return render(request, 'iso_edit.html', {'form': form})
+
 @login_required
 def iso_delete(request,empresa_id, pk):
     iso = get_object_or_404(ISO,pk=pk, empresa_id=empresa_id)
@@ -203,3 +226,6 @@ def iso_delete(request,empresa_id, pk):
         iso.delete()
         return redirect('empresa_detail',pk=empresa_id)
     return render(request, 'iso_confirm_delete.html', {'iso': iso})
+
+
+    

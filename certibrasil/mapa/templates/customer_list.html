@@ -72,6 +72,10 @@
 <body>
     <div class="container">
         <h1>Lista de Empresas</h1>
+        <form action="" method="get">
+            <input type="search" name="q" placeholder="Buscar empresa...">
+            <button type="submit">Buscar</button>
+        </form>
         <a href="{% url 'empresa_create' %}" class="button">Cadastrar nova empresa</a>
         <ul>
             {% for empresa in empresas %}
