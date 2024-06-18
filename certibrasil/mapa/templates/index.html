@@ -104,6 +104,7 @@
             const stateSelect = document.getElementById('uf');
             const citySelect = document.getElementById('cidade');
             const neighborhoodSelect = document.getElementById('bairro');
+            const isoSelect = document.getElementById('iso_type');
 
             const allCities = JSON.parse('{{ cidades|escapejs }}');
             const allNeighborhoods = JSON.parse('{{ bairros|escapejs }}');
@@ -122,6 +123,13 @@
                         citySelect.appendChild(option);
                     });
                 }
+            });
+
+            isoSelect.addEventListener('change', function() {
+                const isoType = isoSelect.value;
+                const url = new URL(window.location);
+                url.searchParams.set('iso_type', isoType);
+                window.location.href = url.toString();
             });
 
             citySelect.addEventListener('change', function() {
@@ -174,6 +182,14 @@
                         {% endfor %}
                     {% endif %}
                 </select>
+                
+                <select id="iso_type" name="iso_type">
+                    <option value="">Selecione o ISO</option>
+                    {% for iso in isos %}
+                        <option value="{{ iso }}" {% if iso == iso_type %}selected{% endif %}>{{ iso }}</option>
+                    {% endfor %}
+                </select>
+                
                 <button type="submit">Buscar</button>
             </form>
         </div>

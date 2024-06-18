@@ -1,7 +1,7 @@
 # views.py
 from django.shortcuts import render, redirect,get_object_or_404
 from .forms import EmpresaForm, EnderecoForm, ISOForm, UserForm
-from .models import Empresa,ISO,Endereco
+from .models import Empresa ,ISO ,Endereco
 import json
 import folium
 from geopy.geocoders import Nominatim
@@ -70,18 +70,23 @@ def all_addresses_map(request):
     state = request.GET.get('uf')
     city = new_func(request)
     neighborhood = request.GET.get('bairro')
+    iso_type = request.GET.get('iso_type')  # Add this line
 
     addresses = Endereco.objects.all()
     states = Endereco.objects.values_list('uf', flat=True).distinct()
     cities = Endereco.objects.filter(uf=state).values_list('cidade', flat=True).distinct() if state else []
     neighborhoods = Endereco.objects.filter(uf=state, cidade=city).values_list('bairro', flat=True).distinct() if state and city else []
-
+    iso_types = ISO.objects.values_list('iso_type', flat=True).distinct()
+    
+    
     if state:
         addresses = addresses.filter(uf=state)
     if city:
         addresses = addresses.filter(cidade=city)
     if neighborhood:
         addresses = addresses.filter(bairro=neighborhood)
+    if iso_type:  # Add this condition
+        addresses = addresses.filter(empresa__certificacoes__iso_type=iso_type)
 
     # Calcular o centro do mapa baseado nos endereços filtrados
     center_lat, center_lon = -14.2350, -51.9253  # Centro padrão: Brasil
@@ -143,6 +148,7 @@ def all_addresses_map(request):
         'ufs': states,
         'cidades': list(cities),
         'bairros': list(neighborhoods),
+        'isos': list(iso_types),
     })
 
 def new_func(request):
