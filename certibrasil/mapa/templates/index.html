@@ -108,7 +108,6 @@
 
             const allCities = JSON.parse('{{ cidades|escapejs }}');
             const allNeighborhoods = JSON.parse('{{ bairros|escapejs }}');
-            const allIso = JSON.parse('{{ isos|escapejs }}');
 
             function populateSelect(selectElement, options) {
                 selectElement.innerHTML = '';
@@ -126,7 +125,6 @@
 
                 populateSelect(citySelect, [{ value: '', text: 'Selecione a Cidade' }].concat(filteredCities.map(cidade => ({ value: cidade.name, text: cidade.name }))));
                 populateSelect(neighborhoodSelect, [{ value: '', text: 'Selecione o Bairro' }]);
-                submitForm();
             });
 
             citySelect.addEventListener('change', function() {
@@ -135,7 +133,6 @@
                 const filteredNeighborhoods = allNeighborhoods.filter(neighborhood => neighborhood.state === selectedState && neighborhood.city === selectedCity);
 
                 populateSelect(neighborhoodSelect, [{ value: '', text: 'Selecione o Bairro' }].concat(filteredNeighborhoods.map(neighborhood => ({ value: neighborhood.name, text: neighborhood.name }))));
-                submitForm();
             });
 
             isoSelect.addEventListener('change', function() {
@@ -143,12 +140,8 @@
                 if (selectedIso) {
                     isoSelect.querySelector('option[value=""]').textContent = 'ISO: ' + selectedIso;
                 }
-                submitForm();
+                
             });
-
-            function submitForm() {
-                document.querySelector('.form-container form').submit();
-            }
 
         });
     </script>
