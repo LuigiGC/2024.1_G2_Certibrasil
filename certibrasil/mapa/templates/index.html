@@ -108,45 +108,48 @@
 
             const allCities = JSON.parse('{{ cidades|escapejs }}');
             const allNeighborhoods = JSON.parse('{{ bairros|escapejs }}');
+            const allIso = JSON.parse('{{ isos|escapejs }}');
+
+            function populateSelect(selectElement, options) {
+                selectElement.innerHTML = '';
+                options.forEach(optionData => {
+                    const option = document.createElement('option');
+                    option.value = optionData.value;
+                    option.textContent = optionData.text;
+                    selectElement.appendChild(option);
+                });
+            }
 
             stateSelect.addEventListener('change', function() {
                 const selectedState = this.value;
-                citySelect.innerHTML = '<option value="">Selecione a Cidade</option>';
-                neighborhoodSelect.innerHTML = '<option value="">Selecione o Bairro</option>';
+                const filteredCities = allCities.filter(cidade => cidade.state === selectedState);
 
-                if (selectedState) {
-                    const filteredCities = allCities.filter(cidade => cidade === selectedState);
-                    filteredCities.forEach(cidade => {
-                        const option = document.createElement('option');
-                        option.value = cidade;
-                        option.textContent = cidade;
-                        citySelect.appendChild(option);
-                    });
-                }
-            });
-
-            isoSelect.addEventListener('change', function() {
-                const isoType = isoSelect.value;
-                const url = new URL(window.location);
-                url.searchParams.set('iso_type', isoType);
-                window.location.href = url.toString();
+                populateSelect(citySelect, [{ value: '', text: 'Selecione a Cidade' }].concat(filteredCities.map(cidade => ({ value: cidade.name, text: cidade.name }))));
+                populateSelect(neighborhoodSelect, [{ value: '', text: 'Selecione o Bairro' }]);
+                submitForm();
             });
 
             citySelect.addEventListener('change', function() {
                 const selectedCity = this.value;
                 const selectedState = stateSelect.value;
-                neighborhoodSelect.innerHTML = '<option value="">Selecione o Bairro</option>';
+                const filteredNeighborhoods = allNeighborhoods.filter(neighborhood => neighborhood.state === selectedState && neighborhood.city === selectedCity);
 
-                if (selectedState && selectedCity) {
-                    const filteredNeighborhoods = allNeighborhoods.filter(neighborhood => neighborhood[1] === selectedState && neighborhood[2] === selectedCity);
-                    filteredNeighborhoods.forEach(neighborhood => {
-                        const option = document.createElement('option');
-                        option.value = neighborhood[0];
-                        option.textContent = neighborhood[0];
-                        neighborhoodSelect.appendChild(option);
-                    });
-                }
+                populateSelect(neighborhoodSelect, [{ value: '', text: 'Selecione o Bairro' }].concat(filteredNeighborhoods.map(neighborhood => ({ value: neighborhood.name, text: neighborhood.name }))));
+                submitForm();
             });
+
+            isoSelect.addEventListener('change', function() {
+                const selectedIso = this.value;
+                if (selectedIso) {
+                    isoSelect.querySelector('option[value=""]').textContent = 'ISO: ' + selectedIso;
+                }
+                submitForm();
+            });
+
+            function submitForm() {
+                document.querySelector('.form-container form').submit();
+            }
+
         });
     </script>
 </head>

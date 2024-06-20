@@ -130,8 +130,8 @@ def all_addresses_map(request):
 
         if lat is not None and lon is not None:
             empresa = endereco.empresa
-            iso_types = ', '.join([iso.iso_type for iso in empresa.certificacoes.all()])
-            popup_text = f"{empresa.nome_empresa}<br>ISOs: {iso_types}" #não operacional feito:Luigi
+            iso_types2 = ', '.join([iso.iso_type for iso in empresa.certificacoes.all()])
+            popup_text = f"{empresa.nome_empresa}<br>ISOs: {iso_types2}" #não operacional feito:Luigi
             folium.Marker(
                 [lat, lon],
                 popup=popup_text,
