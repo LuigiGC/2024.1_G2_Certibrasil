@@ -71,6 +71,14 @@
 <body>
     <div class="container">
         <h1>Empresa: {{ empresa.nome_empresa }}</h1>
+        <ul>
+            <li>
+                <strong>Nome:</strong> {{ empresa.nome }}<br>
+                <strong>Telefone:</strong> {{ empresa.telefone }}<br>
+                <strong>Email:</strong> {{ empresa.email }}<br>
+                <strong>CNPJ:</strong> {{ empresa.cnpj }}<br>
+            </li>
+        </ul>
         <h2>Endereços:</h2>
         <ul>
             {% for endereco in empresa.enderecos.all %}
